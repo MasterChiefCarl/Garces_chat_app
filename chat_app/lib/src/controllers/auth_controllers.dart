@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:chat_app/service_locators.dart';
+import 'package:chat_app/src/navigation/navigation_service.dart';
+import 'package:chat_app/src/screens/authentication/auth_screen.dart';
+import 'package:chat_app/src/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +11,8 @@ class AuthController with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late StreamSubscription authStream;
   User? currentUser;
-  bool working = false;
+  bool working = true;
+  final NavigationService nav = locator<NavigationService>();
   FirebaseAuthException? error;
 
   AuthController() {
@@ -21,32 +26,57 @@ class AuthController with ChangeNotifier {
   }
 
   handleAuthUserChanges(User? event) {
+    ///if no user exists, pop everything and show the AuthScreen
     if (event == null) {
-      print('No Logged In Users');
+      print('no logged in user');
+      nav.popUntilFirst();
+      nav.pushReplacementNamed(AuthScreen.route);
     }
+
+    ///if a user exists, redirect to home immediately
     if (event != null) {
-      print('Logged In User');
-      print(event?.email);
+      print('logged in user');
+      print(event.email);
+      nav.pushReplacementNamed(HomeScreen.route);
     }
+    error = null;
+    working = false;
     currentUser = event;
     notifyListeners();
   }
 
-  Future login(String email, String password) async {
+  Future login(String email, password) async {
     try {
-      working = true; //telling the app that controller is working
-      notifyListeners(); // tell changes controller
+      working = true;
+      notifyListeners();
       UserCredential? result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      working = false;
-      notifyListeners();
+
+      ///there is no 'working=false' here as the handleAuthUserChanges does that for us
       return result;
     } on FirebaseAuthException catch (e) {
       print(e.message);
       print(e.code);
+      working = false;
       currentUser = null;
       error = e;
       notifyListeners();
+    }
+  }
+
+  Future<UserCredential?> register(
+      {required String email, required String password}) async {
+    try {
+      return await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      print(e.code);
+      working = false;
+      currentUser = null;
+      error = e;
+      notifyListeners();
+      return null;
     }
   }
 

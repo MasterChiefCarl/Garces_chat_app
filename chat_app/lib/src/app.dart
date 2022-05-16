@@ -1,3 +1,6 @@
+import 'package:chat_app/service_locators.dart';
+import 'package:chat_app/src/navigation/navigation_service.dart';
+import 'package:chat_app/src/screens/authentication/auth_screen.dart';
 import 'package:flutter/material.dart';
 
 /// The Widget that configures your application.
@@ -10,20 +13,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       restorationScopeId: 'app',
-      theme: ThemeData(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData(
+          primaryColor: Colors.black,
+          textTheme: const TextTheme().apply(
+            bodyColor: Colors.pink,
+            displayColor: Colors.pink,
+            decorationColor: Colors.pink,
+          ),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.pink)
+              .copyWith(secondary: Colors.red)),
       debugShowCheckedModeBanner: false,
-      onGenerateRoute: (RouteSettings routeSettings) {
-        return MaterialPageRoute<void>(
-          settings: routeSettings,
-          builder: (BuildContext context) {
-            switch (routeSettings.name) {
-              default:
-                return Container();
-            }
-          },
-        );
-      },
+      builder: (context, Widget? child) => child as Widget,
+      navigatorKey: locator<NavigationService>().navigatorKey,
+      onGenerateRoute: NavigationService.generateRoute,
+      initialRoute: AuthScreen.route,
     );
   }
 }
