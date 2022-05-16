@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "264096224162",
+    "project_id": "garces-chat-app",
+    "storage_bucket": "garces-chat-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264096224162:android:a3e7749966861c91ed98fb",
+        "android_client_info": {
+          "package_name": "com.example.chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264096224162-qhgoshes2lpon57pp94lr4585v8drm43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDivFdOvOksH9tAd1BqXnMzxspU2N8XwEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264096224162-qhgoshes2lpon57pp94lr4585v8drm43.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "264096224162-tks46t5tsrm441e4r7l4c0b71pid7unq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chatApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
