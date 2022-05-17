@@ -46,127 +46,252 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome'),
-      ),
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        //safearea secures the whole body to stay within the safe area (not to lapas nav items)
-        child: Center(
-          child: SingleChildScrollView(
-            //tips for singlechildscrollview
-            //used to not let thing overflow when dealing with keyboard
-            child: Container(
-              padding: const EdgeInsets.all(25),
-              margin: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(15.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 7,
-                    offset: const Offset(5, 10), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Form(
-                key: _formKey,
-                onChanged: () {
-                  _formKey.currentState?.validate();
-                  if (mounted) {
-                    setState(() {});
-                  }
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(_auth.error?.message ?? ''),
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(hintText: 'Username'),
-                      controller: _unCon,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your username';
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        hintText: 'Password',
-                      ),
-                      controller: _passCon,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      },
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 32),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            // ElevatedButton(
-                            //   onPressed:
-                            //       (_formKey.currentState?.validate() ?? false)
-                            //           ? () {
-                            //               _auth.register(
-                            //                   email: _unCon.text.trim(),
-                            //                   password: _passCon.text.trim());
-                            //             }
-                            //           : null,
-                            //   style: ElevatedButton.styleFrom(
-                            //       padding: const EdgeInsets.all(15),
-                            //       shape: RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.circular(5.0),
-                            //       ),
-                            //       primary: (_formKey.currentState?.validate() ??
-                            //               false)
-                            //           ? Theme.of(context).colorScheme.primary
-                            //           : Colors.grey),
-                            //   child: const Text('Register'),
-                            // ),
-                            ElevatedButton(
-                              onPressed:
-                                  (_formKey.currentState?.validate() ?? false)
-                                      ? () {
-                                          _auth.login(_unCon.text.trim(),
-                                              _passCon.text.trim());
-                                        }
-                                      : null,
-                              style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.all(15),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                  primary: (_formKey.currentState?.validate() ??
-                                          false)
-                                      ? Theme.of(context).colorScheme.secondary
-                                      : Colors.grey),
-                              child: const Text('Log in'),
-                            ),
-                          ],
+    return DefaultTabController(
+      length: _tabs.length,
+      // The Builder widget is used to have a different BuildContext to access
+      // closest DefaultTabController.
+      child: Builder(builder: (BuildContext context) {
+        final TabController tabController = DefaultTabController.of(context)!;
+        tabController.addListener(() {
+          if (!tabController.indexIsChanging) {
+            // Your code goes here.
+            // To get index of current tab use tabController.index
+          }
+        });
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Welcome'),
+            bottom: const TabBar(
+              tabs: _tabs,
+              indicatorColor: Colors.black,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          body: TabBarView(children: [
+            SafeArea(
+              //safearea secures the whole body to stay within the safe area (not to lapas nav items)
+              child: Center(
+                child: SingleChildScrollView(
+                  //tips for singlechildscrollview
+                  //used to not let thing overflow when dealing with keyboard
+                  child: Container(
+                    padding: const EdgeInsets.all(25),
+                    margin: const EdgeInsets.all(40),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(15.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset:
+                              const Offset(5, 10), // changes position of shadow
                         ),
+                      ],
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      onChanged: () {
+                        _formKey.currentState?.validate();
+                        if (mounted) {
+                          setState(() {});
+                        }
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Text(_auth.error?.message ?? ''),
+                          ),
+                          Text(
+                            'Login To Account',
+                            style: Theme.of(context).textTheme.headline5,
+                            textAlign: TextAlign.left,
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            decoration:
+                                const InputDecoration(hintText: 'Username'),
+                            controller: _unCon,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your username';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              hintText: 'Password',
+                            ),
+                            controller: _passCon,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              return null;
+                            },
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 32),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed:
+                                        (_formKey.currentState?.validate() ??
+                                                false)
+                                            ? () {
+                                                _auth.login(_unCon.text.trim(),
+                                                    _passCon.text.trim());
+                                              }
+                                            : null,
+                                    style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.all(15),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        primary: (_formKey.currentState
+                                                    ?.validate() ??
+                                                false)
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .secondary
+                                            : Colors.grey),
+                                    child: const Text('Log in'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-      ),
+            SafeArea(
+              //safearea secures the whole body to stay within the safe area (not to lapas nav items)
+              child: Center(
+                child: SingleChildScrollView(
+                  //tips for singlechildscrollview
+                  //used to not let thing overflow when dealing with keyboard
+                  child: Container(
+                    padding: const EdgeInsets.all(25),
+                    margin: const EdgeInsets.all(40),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(15.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset:
+                              const Offset(5, 10), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      onChanged: () {
+                        _formKey.currentState?.validate();
+                        if (mounted) {
+                          setState(() {});
+                        }
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Text(_auth.error?.message ?? ''),
+                          ),
+                          Text(
+                            'Register An Account',
+                            style: Theme.of(context).textTheme.headline5,
+                            textAlign: TextAlign.left,
+                          ),
+                          const SizedBox(height: 30),
+                          TextFormField(
+                            decoration:
+                                const InputDecoration(hintText: 'Username'),
+                            controller: _unCon,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your username';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              hintText: 'Password',
+                            ),
+                            controller: _passCon,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              return null;
+                            },
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 32),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: (_formKey.currentState
+                                                ?.validate() ??
+                                            false)
+                                        ? () {
+                                            _auth.register(
+                                                email: _unCon.text.trim(),
+                                                password: _passCon.text.trim());
+                                          }
+                                        : null,
+                                    style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.all(15),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        primary: (_formKey.currentState
+                                                    ?.validate() ??
+                                                false)
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                            : Colors.grey),
+                                    child: const Text('Register'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ]),
+        );
+      }),
     );
   }
 }
