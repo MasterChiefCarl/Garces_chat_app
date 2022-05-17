@@ -21,6 +21,11 @@ class _AuthScreenState extends State<AuthScreen> {
       _passCon = TextEditingController();
   final AuthController _auth = locator<AuthController>();
 
+  static const List<Tab> _tabs = <Tab>[
+    Tab(text: 'Login'),
+    Tab(text: 'Register'),
+  ];
+
   @override
   void initState() {
     _auth.addListener(handleLogin);
@@ -54,6 +59,20 @@ class _AuthScreenState extends State<AuthScreen> {
             //used to not let thing overflow when dealing with keyboard
             child: Container(
               padding: const EdgeInsets.all(25),
+              margin: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(15.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: const Offset(5, 10), // changes position of shadow
+                  ),
+                ],
+              ),
               child: Form(
                 key: _formKey,
                 onChanged: () {
@@ -98,26 +117,26 @@ class _AuthScreenState extends State<AuthScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            ElevatedButton(
-                              onPressed:
-                                  (_formKey.currentState?.validate() ?? false)
-                                      ? () {
-                                          _auth.register(
-                                              email: _unCon.text.trim(),
-                                              password: _passCon.text.trim());
-                                        }
-                                      : null,
-                              style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.all(15),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                  primary: (_formKey.currentState?.validate() ??
-                                          false)
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Colors.grey),
-                              child: const Text('Register'),
-                            ),
+                            // ElevatedButton(
+                            //   onPressed:
+                            //       (_formKey.currentState?.validate() ?? false)
+                            //           ? () {
+                            //               _auth.register(
+                            //                   email: _unCon.text.trim(),
+                            //                   password: _passCon.text.trim());
+                            //             }
+                            //           : null,
+                            //   style: ElevatedButton.styleFrom(
+                            //       padding: const EdgeInsets.all(15),
+                            //       shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //       ),
+                            //       primary: (_formKey.currentState?.validate() ??
+                            //               false)
+                            //           ? Theme.of(context).colorScheme.primary
+                            //           : Colors.grey),
+                            //   child: const Text('Register'),
+                            // ),
                             ElevatedButton(
                               onPressed:
                                   (_formKey.currentState?.validate() ?? false)

@@ -25,23 +25,58 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Welcome User!'),
       ),
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              const Text("Signed - in 😊"),
-              IconButton(
-                  onPressed: () async {
-                    _auth.logout();
-                  },
-                  icon: const Icon(Icons.logout),
-                  color: Theme.of(context).colorScheme.secondary)
-            ],
-          ),
-        ],
-      )),
+        child: Container(
+            padding: const EdgeInsets.all(25),
+            margin: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.black),
+              borderRadius: BorderRadius.circular(15.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 7,
+                  offset: const Offset(5, 10), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    const Text("Signed - in 😊"),
+                    Container(
+                        padding: const EdgeInsets.all(25),
+                        margin: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(15.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 7,
+                              offset: const Offset(
+                                  5, 10), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: IconButton(
+                            onPressed: () async {
+                              _auth.logout();
+                            },
+                            icon: const Icon(Icons.logout),
+                            color: Theme.of(context).colorScheme.secondary)),
+                  ],
+                ),
+              ],
+            )),
+      ),
     );
   }
 }
