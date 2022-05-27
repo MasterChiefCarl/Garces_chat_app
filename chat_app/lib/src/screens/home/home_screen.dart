@@ -93,6 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      maxLines: 5,
+                      minLines: 1,
                       onFieldSubmitted: (String text) {
                         send();
                       },
@@ -101,8 +103,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       decoration: const InputDecoration(
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
+                          borderSide:BorderSide(width:50),
                           borderRadius: BorderRadius.all(
-                            Radius.circular(8),
+                            Radius.circular(25),
                           ),
                         ),
                       ),
