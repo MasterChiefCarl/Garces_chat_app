@@ -1,10 +1,10 @@
-import 'dart:developer' as developer;
 
-import 'package:chat_app/src/screens/authentication/auth_screen.dart';
-import 'package:chat_app/src/screens/home/home_screen.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/material.dart';
+import 'dart:developer' as developer;
 
+import '../../screens/authentication/auth_screen.dart';
+import '../../screens/home/home_screen.dart';
 part 'navigation_animations.dart';
 part 'navigation_routing.dart';
 
@@ -149,6 +149,6 @@ class NavigationService {
 
   log(String message, {String? origin}) {
     developer.log(message,
-        name: 'NavigationService${origin != null ? '/$origin' : ''}');
+        name: 'NavigationService${origin != null ? '/' + origin : ''}');
   }
 }

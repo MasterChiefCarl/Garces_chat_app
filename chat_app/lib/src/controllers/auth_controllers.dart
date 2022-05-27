@@ -1,20 +1,22 @@
 import 'dart:async';
 
-import 'package:chat_app/service_locators.dart';
-import 'package:chat_app/src/navigation/navigation_service.dart';
-import 'package:chat_app/src/screens/authentication/auth_screen.dart';
-import 'package:chat_app/src/screens/home/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../service_locators.dart';
+import '../models/chat_user_model.dart';
+import '../screens/authentication/auth_screen.dart';
+import '../screens/home/home_screen.dart';
+import 'navigation/navigation_service.dart';
 
 class AuthController with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late StreamSubscription authStream;
   User? currentUser;
+  FirebaseAuthException? error;
   bool working = true;
   final NavigationService nav = locator<NavigationService>();
-  FirebaseAuthException? error;
-
   AuthController() {
     authStream = _auth.authStateChanges().listen(handleAuthUserChanges);
   }
@@ -64,22 +66,6 @@ class AuthController with ChangeNotifier {
     }
   }
 
-  Future<UserCredential?> register(
-      {required String email, required String password}) async {
-    try {
-      return await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-      print(e.code);
-      working = false;
-      currentUser = null;
-      error = e;
-      notifyListeners();
-      return null;
-    }
-  }
-
   Future logout() async {
     working = true;
     notifyListeners();
@@ -87,5 +73,33 @@ class AuthController with ChangeNotifier {
     working = false;
     notifyListeners();
     return;
+  }
+
+  Future register(
+      {required String email,
+      required String password,
+      required String username}) async {
+   try {
+      working = true;
+      notifyListeners();
+      UserCredential createdUser = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      if(createdUser.user!=null){
+        ChatUser userModel = ChatUser(createdUser.user!.uid, username, email,
+            '', Timestamp.now(), Timestamp.now());
+        return FirebaseFirestore.instance
+            .collection('users')
+            .doc(userModel.uid)
+            .set(userModel.json);
+
+      }
+    } on FirebaseAuthException catch(e){
+     print(e.message);
+     print(e.code);
+     working = false;
+     currentUser = null;
+     error = e;
+     notifyListeners();
+   }
   }
 }
