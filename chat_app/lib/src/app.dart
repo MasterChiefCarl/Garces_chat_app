@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       restorationScopeId: 'app',
       theme: ThemeData(
           primaryColor: Colors.orange,
-          scaffoldBackgroundColor: Colors.amber,
+          scaffoldBackgroundColor: Colors.white,
           textTheme: const TextTheme(
             headline1: TextStyle(
                 fontSize: 72.0,
@@ -27,16 +27,17 @@ class MyApp extends StatelessWidget {
               brightness: Brightness.light,
               primary: Colors.orange,
               onPrimary: Colors.white,
-              secondary: Colors.red,
+              secondary: Colors.blue,
               onSecondary: Colors.white,
               error: Colors.black,
-              onError: Colors.black,
+              onError: Colors.red,
               background: Color.fromARGB(255, 192, 192, 192),
               onBackground: Colors.white,
-              surface: Colors.blue,
-              onSurface: Colors.blue),
+              surface: Colors.red,
+              onSurface: Colors.red,
+              shadow: Color.fromARGB(255, 0, 0, 0)),
           iconTheme: const IconThemeData(
-              color: Colors.blue, size: 25)),
+              color: Colors.red, size: 30)),
       debugShowCheckedModeBanner: false,
       builder: (context, Widget? child) => child as Widget,
       navigatorKey: locator<NavigationService>().navigatorKey,

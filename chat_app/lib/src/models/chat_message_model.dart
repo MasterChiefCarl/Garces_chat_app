@@ -43,7 +43,7 @@ class ChatMessage {
   }
 
   Future deleteMessage(){
-    return updateMessage('message deleted');
+    return updateMessage('[Message has been removed by user]');
 
   }
 
