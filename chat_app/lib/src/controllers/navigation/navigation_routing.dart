@@ -5,7 +5,7 @@ PageRoute getRoute(RouteSettings settings) {
     case AuthScreen.route:
       return FadeRoute(page: const AuthScreen(), settings: settings);
     case HomeScreen.route:
-      return SlideDownRoute(page: const HomeScreen(), settings: settings);
+      return SlideLeftRoute(page: const HomeScreen(), settings: settings);
     default:
       return FadeRoute(page: const AuthScreen(),settings: settings);
   }
